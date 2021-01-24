@@ -41,18 +41,6 @@ const activeUsers = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const userInfo = (username: string) => {};
-
-const downwardsRepo = (req: Request, res: Response, next: NextFunction) => {
-    logging.info(NAMESPACE, 'Downwards repo route called.');
-
-    return res.status(200).json({
-        active: true,
-        repository: req.params.repositoryName
-    });
-};
-
 export default {
-    activeUsers,
-    downwardsRepo
+    activeUsers
 };

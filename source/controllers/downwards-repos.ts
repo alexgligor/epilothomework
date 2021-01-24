@@ -9,13 +9,19 @@ const axiosApi = axios.create({ baseURL: env.github });
 
 const NAMESPACE = 'Downwards Controller';
 
-const activeUsers = async (req: Request, res: Response, next: NextFunction) => {
-    logging.info(NAMESPACE, 'Active users route called.');
+const downwardsRepos = async (req: Request, res: Response, next: NextFunction) => {
+    logging.info(NAMESPACE, 'Downwords route called.');
     const repoName = req.params.repoName;
     try {
-        // const resp = await axiosApi.get(`/users/${username}/events/public`);
-        return res.status(200).json({
-            active: false
+        var resp = await axiosApi.get(`/search/repositories?q=${repoName}&type=repositories`);
+
+        if (resp.data.items.length > 0) {
+            const repoEventsUrl = resp.data.items[0].events_url;
+            findDeletionAndAdditionEvents(repoEventsUrl);
+        }
+
+        return res.status(500).json({
+            message: `Unable to find repository with name:${repoName}`
         });
     } catch (err) {
         logging.error(NAMESPACE, 'Failed to load events for user', err);
@@ -23,18 +29,12 @@ const activeUsers = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const userInfo = (username: string) => {};
-
-const downwardsRepo = (req: Request, res: Response, next: NextFunction) => {
-    logging.info(NAMESPACE, 'Downwards repo route called.');
-
-    return res.status(200).json({
-        active: true,
-        repository: req.params.repositoryName
-    });
+const findDeletionAndAdditionEvents = async (repoUrl: string) => {
+    var resp = await axiosApi.get(repoUrl.split(env.github)[1]);
+    console.log(repoUrl.split(env.github)[1]);
+    console.log(repoUrl);
 };
 
 export default {
-    activeUsers,
-    downwardsRepo
+    downwardsRepos
 };
