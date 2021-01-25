@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import logging from '../config/logging';
-
 import axios from 'axios';
+
+import logging from '../config/logging';
 import { arePushEventsInLast24Hours, Status } from '../services/github-users';
 import { env } from '../config/config';
 
 const axiosApi = axios.create({ baseURL: env.github });
-
 const NAMESPACE = 'Sample Controller';
 
 const activeUsers = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,8 +27,7 @@ const activeUsers = async (req: Request, res: Response, next: NextFunction) => {
         }
 
         return res.status(200).json({
-            active: status === Status.TRUE,
-            username: username
+            active: status === Status.TRUE
         });
     } catch (err) {
         const errorMessage = `Failed to load events for user = ${username}, user is unknowen`;

@@ -1,4 +1,5 @@
 const HOURS_24 = 24 * 60 * 60 * 1000;
+const PUSH_EVENT_TYPE = 'PushEvent';
 
 export enum Status {
     TRUE,
@@ -11,16 +12,19 @@ export const arePushEventsInLast24Hours = (events: any[]): Status => {
         return Status.NONE;
     }
 
-    const pushEvent = events.find((event) => event.type === 'PushEvent');
-    if (pushEvent) {
-        const createdAt = new Date(pushEvent.created_at as string);
+    const firstPushEvent = events.find((event) => event.type === PUSH_EVENT_TYPE);
+    if (firstPushEvent) {
+        const createdAt = new Date(firstPushEvent.created_at as string);
+
         if (isNewerThen24Hours(createdAt)) {
             return Status.TRUE;
         }
     }
 
-    const lastEvent = events[events.length - 1];
-    if (isNewerThen24Hours(lastEvent)) {
+    const lastPushEvent = events[events.length - 1];
+    const createdAt_LastEvent = new Date(lastPushEvent.created_at as string);
+
+    if (isNewerThen24Hours(createdAt_LastEvent)) {
         return Status.LOAD_MORE;
     }
 
@@ -28,7 +32,7 @@ export const arePushEventsInLast24Hours = (events: any[]): Status => {
 };
 
 const isNewerThen24Hours = (dateToCheck: Date): boolean => {
-    const now = new Date();
-    const diff = Math.abs(dateToCheck.getDate() - now.getDate());
-    return diff < HOURS_24;
+    const diff = Math.abs(Date.now() - dateToCheck.getTime());
+
+    return HOURS_24 > diff;
 };

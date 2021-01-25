@@ -6,4 +6,34 @@ describe('Finding push activity for github user', () => {
 
         expect(result).toEqual(Status.NONE);
     });
+
+    test('User Activity', () => {
+        const result = arePushEventsInLast24Hours([
+            {
+                type: 'PushEvent',
+                created_at: new Date().toISOString()
+            },
+            {
+                type: 'Other',
+                created_at: new Date().toISOString()
+            }
+        ]);
+
+        expect(result).toEqual(Status.TRUE);
+    });
+
+    test('Old PushEvent', () => {
+        const result = arePushEventsInLast24Hours([
+            {
+                type: 'PushEvent',
+                created_at: '2020-01-25T11:29:43.284Z'
+            },
+            {
+                type: 'Other',
+                created_at: new Date().toISOString()
+            }
+        ]);
+
+        expect(result).toEqual(Status.LOAD_MORE);
+    });
 });
