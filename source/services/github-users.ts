@@ -16,9 +16,8 @@ export const arePushEventsInLast24Hours = (events: any[]): Status => {
     if (firstPushEvent) {
         const createdAt = new Date(firstPushEvent.created_at as string);
 
-        if (isNewerThen24Hours(createdAt)) {
-            return Status.TRUE;
-        }
+        if (isNewerThen24Hours(createdAt)) return Status.TRUE;
+        else return Status.NONE;
     }
 
     const lastPushEvent = events[events.length - 1];

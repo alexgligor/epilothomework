@@ -29,6 +29,21 @@ describe('Finding push activity for github user', () => {
                 created_at: '2020-01-25T11:29:43.284Z'
             },
             {
+                type: '2020-01-25T11:29:43.284Z',
+                created_at: new Date().toISOString()
+            }
+        ]);
+
+        expect(result).toEqual(Status.NONE);
+    });
+
+    test('Load Next Page', () => {
+        const result = arePushEventsInLast24Hours([
+            {
+                type: 'Other',
+                created_at: new Date().toISOString()
+            },
+            {
                 type: 'Other',
                 created_at: new Date().toISOString()
             }
