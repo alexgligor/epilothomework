@@ -6,3 +6,4 @@ export const routes = express.Router();
 
 routes.get('/active/:userName', active.activeUsers);
 routes.get('/downwards/:repoName', downword.downwardsRepos);
+routes.get('/downwards/:repoName/:userName', downword.downwardsRepos);

@@ -27,6 +27,6 @@
     "dev": "ts-node-dev --respawn -- source/server.ts",
     "test": "jest"
   },
-  "author": "",
+  "author": "Gligor Dan Alexandru",
   "license": "ISC"
 }
