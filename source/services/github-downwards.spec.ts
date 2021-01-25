@@ -36,4 +36,46 @@ describe('Checking repository additions and deletions', () => {
 
         expect(result).toEqual(false);
     });
+    test('No additions - No deletions', () => {
+        const result = areMoreAdditonsThenDeletions([
+            {
+                additions: '0',
+                deletions: '0'
+            },
+            {
+                additions: '0',
+                deletions: '0'
+            }
+        ]);
+
+        expect(result).toEqual(false);
+    });
+
+    test('Additions equals deletions', () => {
+        const result = areMoreAdditonsThenDeletions([
+            {
+                additions: '12',
+                deletions: '0'
+            },
+            {
+                additions: '0',
+                deletions: '12'
+            }
+        ]);
+
+        expect(result).toEqual(false);
+    });
+
+    test('Missing properties', () => {
+        const result = areMoreAdditonsThenDeletions([
+            {
+                deletions: '0'
+            },
+            {
+                additions: '0'
+            }
+        ]);
+
+        expect(result).toEqual(false);
+    });
 });

@@ -1,9 +1,8 @@
 import express from 'express';
-import active from './controllers/active-users';
-import downword from './controllers/downwards-repos';
+import { activeUsersController } from './controllers/active-users';
+import { downwardsController } from './controllers/downwards-repos';
 
 export const routes = express.Router();
 
-routes.get('/active/:userName', active.activeUsers);
-routes.get('/downwards/:repoName', downword.downwardsRepos);
-routes.get('/downwards/:repoName/:userName', downword.downwardsRepos);
+routes.get('v1/active/:userName', activeUsersController);
+routes.get('v1/downwards/:repoName', downwardsController);

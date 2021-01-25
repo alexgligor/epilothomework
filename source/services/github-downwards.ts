@@ -1,10 +1,11 @@
 export const areMoreAdditonsThenDeletions = (files: any[]): boolean => {
-    var deletions: number = 0;
-    var additions: number = 0;
+    let deletions = 0;
+    let additions = 0;
 
     files.forEach((file) => {
-        deletions += parseInt(file.deletions);
-        additions += parseInt(file.additions);
+        deletions += file.deletions ? parseInt(file.deletions) : 0;
+        additions += file.additions ? parseInt(file.additions) : 0;
     });
+
     return additions > deletions;
 };
