@@ -4,10 +4,9 @@ import axios from 'axios';
 import { arePushEventsInLast24Hours, Status } from '../services/github-users';
 import { env } from '../config/config';
 
-const axiosApi = axios.create({ baseURL: env.github });
-
 export const activeUsersController = async (req: Request, res: Response, next: NextFunction) => {
     const username = req.params.userName;
+
     if (!username) {
         return res.status(400).json({
             message: 'UserName parameter is empty'
@@ -18,7 +17,7 @@ export const activeUsersController = async (req: Request, res: Response, next: N
         let status = Status.LOAD_MORE;
 
         while (status === Status.LOAD_MORE && page < env.githubpaginationlimit) {
-            const resp = await axiosApi.get(`/users/${username}/events/public?page=${page}`);
+            const resp = await axios.get(`${env.github}/users/${username}/events/public?page=${page}`);
             status = arePushEventsInLast24Hours(resp.data);
             page++;
         }

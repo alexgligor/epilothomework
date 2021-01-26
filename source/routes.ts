@@ -4,5 +4,5 @@ import { downwardsController } from './controllers/downwards-repos';
 
 export const routes = express.Router();
 
-routes.get('v1/active/:userName', activeUsersController);
-routes.get('v1/downwards/:repoName', downwardsController);
+routes.get('/v1/active/:userName', activeUsersController);
+routes.get('/v1/downwards/:repoName', downwardsController);

@@ -1,28 +1,15 @@
-import { activeUsersController } from './active-users';
-import request from 'supertest';
-import { app } from '../app';
 import { httpServer } from '../server';
-import axios from 'axios';
+import supertest from 'supertest';
 
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-describe('Checking repository additions and deletions', () => {
-    test('Empty list', async () => {
-        mockedAxios.post.mockResolvedValueOnce({
-            status: 200,
-            data: [
-                {
-                    type: 'PushEvent',
-                    created_at: new Date().toISOString()
-                },
-                {
-                    type: 'Other',
-                    created_at: new Date().toISOString()
-                }
-            ]
-        });
-        const resp = await request(app).get(`/v1/active/userTest`).send();
-        expect(resp.status).toBe(200);
+const request = supertest.agent(httpServer);
+describe('Checking user activity', () => {
+    it('Positive feedback', async (done) => {
+        const res = await request
+            .get(`/v1/active/user_test`)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).toHaveProperty('active', true);
+            });
+        done();
     });
 });

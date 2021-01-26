@@ -3,7 +3,6 @@ import axios from 'axios';
 import { areMoreAdditonsThenDeletions } from '../services/github-downwards';
 import { env } from '../config/config';
 
-const axiosApi = axios.create({ baseURL: env.github });
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 
 export const downwardsController = async (req: Request, res: Response, next: NextFunction) => {
@@ -24,10 +23,10 @@ export const downwardsController = async (req: Request, res: Response, next: Nex
             message: `No repository with name \'${repoName}\' was found!`
         });
 
-    const findRepoUrl = `/repos/${ownerAndRepoName}/compare/master@{${secondsFromLastSevenDays}}...master`;
+    const findRepoUrl = `${env.github}/repos/${ownerAndRepoName}/compare/master@{${secondsFromLastSevenDays}}...master`;
 
     try {
-        const resp = await axiosApi.get(findRepoUrl);
+        const resp = await axios.get(findRepoUrl);
         const areMoreAdditions = areMoreAdditonsThenDeletions(resp.data.files);
 
         return res.status(200).json({
@@ -41,7 +40,7 @@ export const downwardsController = async (req: Request, res: Response, next: Nex
 };
 
 const fetchOwnerAndRepositoryName = async (repositoriName: string): Promise<string> => {
-    const resp = await axiosApi.get(`/search/repositories?q=${repositoriName}&type=repositories`);
+    const resp = await axios.get(`${env.github}/search/repositories?q=${repositoriName}&type=repositories`);
     if (resp.data && resp.data.items.length > 0) return resp.data.items[0].full_name;
 
     return '';
