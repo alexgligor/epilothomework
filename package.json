@@ -17,7 +17,6 @@
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
-    "axios-mock-adapter": "^1.19.0",
     "jest": "^26.6.3",
     "ts-jest": "^26.4.4",
     "ts-node-dev": "^1.1.1",
@@ -28,7 +27,11 @@
     "start": "tsc && node build/server.js",
     "build": "tsc",
     "dev": "ts-node-dev --respawn -- source/server.ts",
-    "test": "jest"
+    "test": "jest --maxWorkers=1",
+    "package": "cp ./package.json ./build",
+    "ins": "npm install && npm run build && npm run package",
+    "docker": "cd build && dir"
+  
   },
   "author": "Gligor Dan Alexandru",
   "license": "ISC"

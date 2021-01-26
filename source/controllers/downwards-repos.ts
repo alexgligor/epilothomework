@@ -10,7 +10,6 @@ export const downwardsController = async (req: Request, res: Response, next: Nex
     const userName = req.query.userName;
     const timeFromLastSevenDays = Date.now() - SEVEN_DAYS;
     const secondsFromLastSevenDays = timeFromLastSevenDays.toString().substr(0, 10);
-
     let ownerAndRepoName = '';
     if (userName) {
         ownerAndRepoName = `${userName}/${repoName}`;
